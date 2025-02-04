@@ -185,6 +185,44 @@
             color: var(--container-bg);
         }
 
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.9); 
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 80%;
+            max-height: 80%;
+            margin-top: 5%;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
         @media (max-width: 768px) {
             .flex-container {
                 flex-direction: column;
@@ -253,6 +291,12 @@
             </div>
         </div>
     </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img id="modalImage" class="modal-content" src="https://via.placeholder.com/600x400" alt="Filler Image">
+    </div>
+
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script>
         const playlistMap = {
@@ -353,43 +397,39 @@
             const responses = {
                 "!help": `<strong>Available Commands:</strong>
                          <ul>
-                             <li><code>!help</code> - (lists most commands) please note that are several hidden questions that have responses!</li>
-                               <li><code>!req</code> - Submit a new question </li>
-                            <li><code>Friend name </code>Input your name, you may have a response.</li>
+                             <li><code>!help</code> - lists some of the commands and user questions!</li>
+                             <li><code>!req</code> - Submit a new question </li>
+                             <li><code>Friend name </code>Input your name, you may have a response.</li>
                              <li><code>age</code></li>
                              <li><code>birthday</code></li>
                              <li><code>hi</code> - chain response</li>
-                            <li><code>favorite</code> - food/song/band/game</li>
+                             <li><code>favorite</code> - food/song/band/game</li>
                          </ul>`,
                 "age": "19 years young",
                 "birthday": "10.29.2005",
-
-                "hi": "Hey!", 
-                "hey": "Yo!", 
+                "hi": "Hey!",
+                "hey": "Yo!",
                 "yo": "FUCK YOU!",
                 "how are you": "always doing better :)",
-                
-                //people
                 "leo": "Peon of peons, pdfs of pdfs, shameless gooner and loves _._._._",
-                "meny": "menysan!", 
-                "Chris": " hi nonchalant king!",
-                "henry": " u pmo fking noob, so fking noob is insane", 
+                "meny": "menysan!",
+                "chris": " hi nonchalant king!",
+                "henry": " u pmo fking noob, so fking noob is insane",
                 "edwin": "picture",
+                "kaeden": "picture",
                 "tony": "Enter your last name",
                 "sanchez": "I love you man, I've been wanting to speak to you one on one for a while, I could never understand the pain you're going through, you're one of the strongest people I know and I pray for you everyday.",
-
                 "josh": "I know lots of Joshs, enter your first & last name!",
                 "joshua rabanales": "Bbg chill you dtm! Proud of you always <3",
                 "joshua mcknight": "I hope things work out for you <3, you get too much shit but thats because everyone loves you.",
-                "joshua garibay": "I hope you're do", 
+                "joshua garibay": "I hope you're do",
                 "maria": "Enter your last name",
                 "alecio": "I'm sorry Maria, I think looking back we can agree it was all a little ridiculous. Im sorry for leaving so abruptly. I understood that I wasn't going to be able to give you what you deserved. Thank you for all the nights you stayed up with me, love you! ",
-                "blanca": "cant speak or big trouble", 
-
+                "blanca": "cant speak or big trouble",
                 "favorite song": "Anticoagulant by Sianvar, means a lot to me.",
                 "favorite band": "Always has been Hail the Sun, introduced me to the genre of posthardcore which then led to discovery of a bunch of other bands I listen to today.",
-                "favorite game": "Whenever I think of my favorite games, Breath of the wild, Hollow Knight and Celeste pop in my head immediately.",
-                "default": "Try asking this question here using <cod!reqe>!help</code> for (some) of the available commands."
+                "favorite game": "Whenever I think of my favorite games, Breath of the wild, Hollow Knight and Celeste pop in my head immediately, on what im craving, I like way too many different types of food I can't pick!",
+                "default": "There isn't a recorded answer for this question yet, try requesting the answer to this question here using <code>!req.</code> <code>!help</code>for only some of the available commands and user questions!."
             };
 
             if (question === "!req") {
@@ -398,11 +438,32 @@
                 return;
             }
 
+            if (question === "edwin" || question === "kaeden") {
+                openModal(question);
+                return;
+            }
+
             const response = responses[question] || responses.default;
             userQuestion.textContent = question;
             answerText.innerHTML = response;
             answerDiv.style.display = 'block';
             requestBox.style.display = 'none';
+        }
+
+        function openModal(name) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            if (name === "edwin") {
+                modalImage.src = "https://cdn.discordapp.com/attachments/507032646774423612/1298516526596624436/m9xkpNT.png?ex=67a39e01&is=67a24c81&hm=621e7ac49b89acd26cb147f74fef00e341ec08e9fb28906b9789d556704a9f1a&"; // Replace with Edwin's image URL
+            } else if (name === "kaeden") {
+                modalImage.src = "https://cdn.discordapp.com/attachments/1150158510357749860/1336460803909484578/0N9sb0Q.png?ex=67a3e39d&is=67a2921d&hm=77ab80d8da13f46889e9e8080a2eda8b896ef87af2de284f5b852d7612a96354&"; // Replace with Kaeden's image URL
+            }
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = "none";
         }
 
         function displayPlaylist(type) {
@@ -435,7 +496,7 @@
             event.preventDefault();
             const requestQuestion = document.getElementById('requestQuestion').value.trim();
             if (!requestQuestion) {
-                alert('Please enter your question!');
+                alert('Please enter your question! (for me perferably)');
                 return;
             }
 
@@ -472,6 +533,12 @@
         document.querySelector('.dropbtn').addEventListener('click', function() {
             document.querySelector('.dropdown-content').classList.toggle('show');
         });
+
+        window.onkeydown = function(event) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        };
     </script>
 </body>
 </html>
