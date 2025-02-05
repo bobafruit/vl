@@ -254,7 +254,7 @@
     <div class="container">
         <h1>Ask testest</h1>
         <ul class="help-list">
-            <li>!help for list of questions</li>
+            <li>!help for list of questions and user questions</li>
             <li>!req to send a question to me (anonymously) </li>
         </ul>
 
@@ -280,7 +280,7 @@
                 <form id="requestForm" action="https://formsubmit.co/contactkevindelarosa@gmail.com" method="POST" class="request-box" style="display: none;">
                     <input type="hidden" name="_captcha" value="false"> 
                     <input type="hidden" name="_template" value="table"> 
-                    <textarea id="requestQuestion" name="requestQuestion" placeholder="Type your special request here..." required></textarea>
+                    <textarea id="requestQuestion" name="requestQuestion" placeholder="Type your question to me here!" required></textarea>
                     <button type="submit">Send Request</button>
                 </form>
 
@@ -397,14 +397,20 @@
             const responses = {
                 "!help": `<strong>Available Commands:</strong>
                          <ul>
-                             <li><code>!help</code> - lists some of the commands and user questions!</li>
-                             <li><code>!req</code> - Submit a new question </li>
+                            <li><code>User Questions</code> 
+                            <li> Whats the best metal song </li>
+                            <li> Is Lebron retiring soon? </li>
+                            <li> </li>
+                            <li> <code>Preset Questions</code> </li>
                              <li><code>Friend name </code>Input your name, you may have a response.</li>
                              <li><code>age</code></li>
                              <li><code>birthday</code></li>
                              <li><code>hi</code> - chain response</li>
                              <li><code>favorite</code> - food/song/band/game</li>
                          </ul>`,
+                //user questions 
+                "is lebron retiring soon": "People think after the Anthony Davis trade that Lebron is on his way out of the NBA entirely by picking up Luka. Do I think Lebron is retiring soon? I do think that Lebrons career is coming to an end very soon, and this Luka trade will help fill the void that the goat will leave.",
+                "whats the best metal song": "Screaming by Loathe", 
                 "age": "19 years young",
                 "birthday": "10.29.2005",
                 "hi": "Hey!",
@@ -429,7 +435,7 @@
                 "favorite song": "Anticoagulant by Sianvar, means a lot to me.",
                 "favorite band": "Always has been Hail the Sun, introduced me to the genre of posthardcore which then led to discovery of a bunch of other bands I listen to today.",
                 "favorite game": "Whenever I think of my favorite games, Breath of the wild, Hollow Knight and Celeste pop in my head immediately, on what im craving, I like way too many different types of food I can't pick!",
-                "default": "There isn't a recorded answer for this question yet, try requesting the answer to this question here using <code>!req.</code> <code>!help</code>for only some of the available commands and user questions!."
+                "default": "There isn't a recorded answer for this question yet, try requesting the answer to this question here using <code>!req.</code> <code>!help </code>for only some of the available commands and user questions!."
             };
 
             if (question === "!req") {
