@@ -27,11 +27,26 @@
             --nameplate-blur: 10px;
             --nameplate-gradient: linear-gradient(25deg, rgba(115, 135, 123, 0.5), rgba(13, 13, 13, 0.5));
             --nameplate-radius: 20px;
-            --nameplate-width: 46rem;
+            --nameplate-width: 90%;
             --content-width: 60rem;
             --nameplate-padding: 40px 17px 17px 17px;
             --nameplate-border: 2px solid rgba(115, 135, 123, 0.4);
             --nameplate-glow: 0px 0px 16.5px var(--text-color);
+        }
+
+        @media screen and (max-width: 768px) {
+            :root {
+                --nameplate-width: 85%;
+                --nameplate-padding: 30px 15px 15px 15px;
+                --nameplate-radius: 15px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            :root {
+                --nameplate-width: 80%;
+                --nameplate-padding: 25px 12px 12px 12px;
+            }
         }
 
         body {
