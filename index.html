@@ -395,8 +395,8 @@
         .main-content {
             display: none;
             opacity: 0;
-            width: 100%;
-            max-width: var(--content-width);
+            width: var(--nameplate-width);
+            max-width: var(--nameplate-width);
             margin: 0 auto;
             transition: opacity 0.5s ease;
         }
@@ -413,6 +413,7 @@
             width: 100%;
             animation: expandContainer 1s ease-out forwards;
             transform-origin: top center;
+            box-sizing: border-box;
         }
         
         @keyframes expandContainer {
