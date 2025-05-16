@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>vlx</title>
     <style>
+        @import url('https://api.fontshare.com/v2/css?f[]=satoshi@1&f[]=array@400&display=swap');
+        
         :root {
             --primary-bg: #F5E4D7;
             --container-bg: #73877B; 
@@ -17,15 +19,34 @@
             --input-text: #73877B;
             --dropdown-bg: #d8e2dd; 
             --dropdown-text: #73877B; 
+           
+            --nameplate-text: #e5d1d0;
+            --nameplate-text-darker: rgba(229, 209, 208, 0.5);
+            --nameplate-icon: #ffffff;
+            --nameplate-container: rgba(115, 135, 123, 0.5);
+            --nameplate-blur: 10px;
+            --nameplate-gradient: linear-gradient(25deg, rgba(115, 135, 123, 0.5), rgba(13, 13, 13, 0.5));
+            --nameplate-radius: 20px;
+            --nameplate-width: 46rem;
+            --content-width: 60rem;
+            --nameplate-padding: 40px 17px 17px 17px;
+            --nameplate-border: 2px solid rgba(115, 135, 123, 0.4);
+            --nameplate-glow: 0px 0px 16.5px var(--text-color);
         }
 
         body {
-            font-family: Arial, sans-serif;
-            max-width: 1200px;
+            font-family: 'Satoshi', Arial, sans-serif;
+            max-width: calc(var(--content-width) + 40px);
             margin: 0 auto;
             padding: 20px;
             background-color: var(--primary-bg);
             transition: all 0.5s ease;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         #answer iframe {
@@ -182,7 +203,12 @@
             border-radius: 5px;
             border: 1px solid var(--button-bg);
             background-color: var(--answer-bg);
-            color: var(--container-bg);
+            color: var(--answer-text);
+        }
+
+        .request-box button {
+            background-color: var(--button-bg);
+            color: var(--text-color);
         }
 
         .modal {
@@ -223,7 +249,179 @@
             cursor: pointer;
         }
 
+       
+        .nameplate-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            opacity: 0.2;
+            pointer-events: none;
+            display: none;
+        }
+
+        .profile-container {
+            width: var(--nameplate-width);
+            max-width: var(--nameplate-width);
+            background: var(--nameplate-gradient);
+            backdrop-filter: blur(var(--nameplate-blur));
+            border-radius: var(--nameplate-radius);
+            padding: var(--nameplate-padding);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 0 auto;
+            transition: transform 0.8s ease-out;
+            transform: translateY(0);
+        }
+        
+        .profile-container.moved-up {
+            transform: translateY(0);
+            margin: 20px auto 10px auto;
+        }
+
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .username {
+            font-weight: 600;
+            font-size: 46px;
+            position: relative;
+            margin: 0;
+            color: var(--nameplate-text);
+            background-image: url(https://assets.guns.lol/sparkle_white.gif);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: usernameGlow 1.5s ease-in-out infinite alternate;
+            text-shadow: var(--nameplate-glow);
+            font-family: 'Satoshi', Arial, sans-serif;
+            letter-spacing: 1px;
+            -webkit-text-stroke: 0.5px var(--nameplate-text);
+        }
+
+        @keyframes usernameGlow {
+            from {
+                filter: drop-shadow(0 0 10px var(--nameplate-text));
+            }
+            to {
+                filter: drop-shadow(0 0 18px var(--nameplate-text));
+            }
+        }
+
+        .bio {
+            font-weight: 500;
+            font-size: 18px;
+            color: var(--nameplate-text-darker);
+            margin-top: -5px;
+            margin-bottom: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+            justify-content: center;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(115, 135, 123, 0.2);
+            color: var(--nameplate-icon);
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon svg {
+            filter: drop-shadow(var(--nameplate-icon) 1px 0 7px);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            background-color: var(--accent-color);
+        }
+
+        .social-links a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+     
+        .show-more-btn {
+            background-color: var(--button-bg);
+            color: var(--text-color);
+            border: none;
+            padding: 8px 20px;
+            margin-top: 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Satoshi', Arial, sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .show-more-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--container-bg);
+        }
+
+        .main-content {
+            display: none;
+            opacity: 0;
+            width: 100%;
+            max-width: var(--content-width);
+            margin: 0 auto;
+            transition: opacity 0.5s ease;
+        }
+
+     
+        .container {
+            background: var(--nameplate-gradient);
+            backdrop-filter: blur(var(--nameplate-blur));
+            padding: 23px;
+            border-radius: var(--nameplate-radius);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin: 0;
+            transition: all 0.5s ease;
+            width: 100%;
+            animation: expandContainer 1s ease-out forwards;
+            transform-origin: top center;
+        }
+        
+        @keyframes expandContainer {
+            0% {
+                max-height: 0;
+                opacity: 0;
+                transform: scaleY(0);
+            }
+            100% {
+                max-height: 2000px;
+                opacity: 1;
+                transform: scaleY(1);
+            }
+        }
+
+        .hidden-header {
+            display: none;
+        }
+
         @media (max-width: 768px) {
+            :root {
+                --nameplate-width: 95%;
+                --content-width: 95%;
+            }
             .flex-container {
                 flex-direction: column;
             }
@@ -237,68 +435,149 @@
             }
 
             .container h1 {
-                font-size: 24px; 
+                font-size: 28px; 
             }
 
             #question-input, button {
-                font-size: 14px; 
+                font-size: 16px; 
             }
 
             .dropdown-content {
                 position: static; 
             }
+            
+            .profile-container {
+                width: 90%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>vl Ask me Anything (AMA)</h1>
-        <ul class="help-list">
-            <li>!help for questions asked by users.</li>
-            <li>!req to send a question to me. (anonymously) </li>
-        </ul>
-
-        <div class="flex-container">
-            <div class="left-side">
-                <div class="dropdown">
-                    <button class="dropbtn">Music</button>
-                    <div class="dropdown-content">
-                        <a href="#" onclick="displayPlaylist('slow')">Slow Playlist</a>
-                        <a href="#" onclick="displayPlaylist('heavy')">Heavy Playlist</a>
-                        <a href="#" onclick="displayPlaylist('instrumental')">Instrumental Playlist</a>
-                        <a href="#" onclick="displayPlaylist('edm')">EDM Playlist</a>
-                        <a href="#" onclick="displayPlaylist('fav')">My Favorite Playlist</a>
-                    </div>
-                </div>
-                <div id="spotify-embed"></div>
+    <div class="nameplate-background" style="background-image:url(https://r2.guns.lol/dd49228a-e260-4aad-ac03-3e7e70dc0e23.gif)"></div>
+    
+    <div class="profile-container">
+        <div class="profile-content">
+            <h1 class="username">vlxkev</h1>
+            <h3 class="bio">I love you!</h3>
+            
+            <div class="social-icons">
+               
+                <a href="https://x.com/vlxkev" target="_blank" class="social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="26.8 48 460.2 416">
+                        <path fill="currentColor" d="M389.2 48h70.6L305.6 224.2L487 464H345L233.7 318.6L106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9L389.2 48zm-24.8 373.8h39.1L151.1 88h-42l255.3 333.8z"></path>
+                    </svg>
+                </a>
+                
+               
+                <a href="https://discord.com/users/243191343264956417" target="_blank" class="social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="1.96 4.26 20.03 15.53">
+                        <path fill="currentColor" d="M14.82 4.26a10.14 10.14 0 0 0-.53 1.1a14.66 14.66 0 0 0-4.58 0a10.14 10.14 0 0 0-.53-1.1a16 16 0 0 0-4.13 1.3a17.33 17.33 0 0 0-3 11.59a16.6 16.6 0 0 0 5.07 2.59A12.89 12.89 0 0 0 8.23 18a9.65 9.65 0 0 1-1.71-.83a3.39 3.39 0 0 0 .42-.33a11.66 11.66 0 0 0 10.12 0q.21.18.42.33a10.84 10.84 0 0 1-1.71.84a12.41 12.41 0 0 0 1.08 1.78a16.44 16.44 0 0 0 5.06-2.59a17.22 17.22 0 0 0-3-11.59a16.09 16.09 0 0 0-4.09-1.35zM8.68 14.81a1.94 1.94 0 0 1-1.8-2a1.93 1.93 0 0 1 1.8-2a1.93 1.93 0 0 1 1.8 2a1.93 1.93 0 0 1-1.8 2zm6.64 0a1.94 1.94 0 0 1-1.8-2a1.93 1.93 0 0 1 1.8-2a1.92 1.92 0 0 1 1.8 2a1.92 1.92 0 0 1-1.8 2z"></path>
+                    </svg>
+                </a>
+                
+               
+                <a href="https://github.com/bobafruit" target="_blank" class="social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5c.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34c-.46-1.16-1.11-1.47-1.11-1.47c-.91-.62.07-.6.07-.6c1 .07 1.53 1.03 1.53 1.03c.87 1.52 2.34 1.07 2.91.83c.09-.65.35-1.09.63-1.34c-2.22-.25-4.55-1.11-4.55-4.92c0-1.11.38-2 1.03-2.71c-.1-.25-.45-1.29.1-2.64c0 0 .84-.27 2.75 1.02c.79-.22 1.65-.33 2.5-.33c.85 0 1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02c.55 1.35.2 2.39.1 2.64c.65.71 1.03 1.6 1.03 2.71c0 3.82-2.34 4.66-4.57 4.91c.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z"></path>
+                    </svg>
+                </a>
+                
+                
+                <a href="https://instagram.com/vlxkev" target="_blank" class="social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3Z"></path>
+                    </svg>
+                </a>
             </div>
-
-            <div class="right-side">
-                <input type="text" id="question-input" placeholder="Type a phrase/name or question here...">
-                <button onclick="getAnswer()">Get Answer</button>
-
-                <form id="requestForm" action="https://formsubmit.co/contactkevindelarosa@gmail.com" method="POST" class="request-box" style="display: none;">
-                    <input type="hidden" name="_captcha" value="false"> 
-                    <input type="hidden" name="_template" value="table"> 
-                    <textarea id="requestQuestion" name="requestQuestion" placeholder="Type your question to me here! (ideally pretaining to me)" required></textarea>
-                    <button type="submit">Send Request</button>
-                </form>
-
-                <div id="answer">
-                    <strong>Your question:</strong> <span id="userQuestion"></span><br><br>
-                    <strong>Answer:</strong> <span id="answerText"></span>
-                </div>
-            </div>
+            <button class="show-more-btn" id="showMoreBtn">Show More</button>
         </div>
     </div>
 
-    <div id="imageModal" class="modal">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <img id="modalImage" class="modal-content" src="https://via.placeholder.com/600x400" alt="Filler Image">
+    <div class="main-content">
+        <div class="container">
+            <h1 class="hidden-header">vlxkev ama (ask me anything)</h1>
+            <ul class="help-list hidden-header">
+                <li>!help for questions asked by users.</li>
+                <li>!req to send a question to me. (anonymously) </li>
+            </ul>
+
+            <div class="flex-container">
+                <div class="left-side">
+                    <div class="dropdown">
+                        <button class="dropbtn">Music</button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="displayPlaylist('slow')">Slow Playlist</a>
+                            <a href="#" onclick="displayPlaylist('heavy')">Heavy Playlist</a>
+                            <a href="#" onclick="displayPlaylist('instrumental')">Instrumental Playlist</a>
+                            <a href="#" onclick="displayPlaylist('edm')">EDM Playlist</a>
+                            <a href="#" onclick="displayPlaylist('fav')">My Favorite Playlist</a>
+                        </div>
+                    </div>
+                    <div id="spotify-embed"></div>
+                </div>
+
+                <div class="right-side">
+                    <input type="text" id="question-input" placeholder="!req to send a question to me!">
+                    <button onclick="getAnswer()">Get Answer</button>
+
+                    <form id="requestForm" action="https://formsubmit.co/contactkevindelarosa@gmail.com" method="POST" class="request-box" style="display: none;">
+                        <input type="hidden" name="_captcha" value="false"> 
+                        <input type="hidden" name="_template" value="table"> 
+                        <textarea id="requestQuestion" name="requestQuestion" placeholder="Type your question to me here! (ideally pretaining to me)" required></textarea>
+                        <button type="submit">Send Request</button>
+                    </form>
+
+                    <div id="answer">
+                        <strong>Your question:</strong> <span id="userQuestion"></span><br><br>
+                        <strong>Answer:</strong> <span id="answerText"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="imageModal" class="modal">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modalImage" class="modal-content" src="https://via.placeholder.com/600x400" alt="Filler Image">
+        </div>
     </div>
 
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script>
+       
+        window.addEventListener('DOMContentLoaded', function() {
+          
+            document.documentElement.style.setProperty('--nameplate-text', getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim());
+            document.documentElement.style.setProperty('--nameplate-gradient', `linear-gradient(25deg, ${getComputedStyle(document.documentElement).getPropertyValue('--container-bg').trim()}99, rgba(13, 13, 13, 0.5))`);
+        });
+
+    
+        document.getElementById('showMoreBtn').addEventListener('click', function() {
+            const profileContainer = document.querySelector('.profile-container');
+            const mainContent = document.querySelector('.main-content');
+            
+          
+            profileContainer.classList.add('moved-up');
+            
+        
+            mainContent.style.display = 'block';
+            
+          
+            void mainContent.offsetWidth;
+            
+          
+            mainContent.style.opacity = '1';
+            
+           
+            this.style.display = 'none';
+            
+           
+            const helpText = "Type '!help' to see available commands";
+            const answerDiv = document.getElementById('answer');
+            const answerText = document.getElementById('answerText');
+            answerText.innerHTML = helpText;
+            answerDiv.style.display = 'block';
+        });
+
         const playlistMap = {
             'slow': {
                 id: '0laBC3owGguZIP42BDKA4d',
@@ -351,17 +630,17 @@
             'edm': {
                 id: '5YJaWjn3G3fwJaxSkrvpUR',
                 colors: [
-                    '#27242D', 
-                    '#323145', 
-                    '#dce5e9', 
-                    '#cbcbe5', 
-                    '#424055', 
-                    '#97a5be', 
-                    '#f9f9f9', 
-                    '#424055',
-                    '#f9f9f9', 
-                    '#424055', 
-                    '#f9f9f9'  
+                    '#27242D',  // primary bg
+                    '#323145',  // container bg
+                    '#f9f9f9',  // text color
+                    '#cbcbe5',  // accent
+                    '#424055',  // button bg
+                    '#424055',  // input bg
+                    '#f9f9f9',  // input text
+                    '#424055',  // answer bg
+                    '#f9f9f9',  // answer text
+                    '#424055',  // dropdown bg
+                    '#f9f9f9'   // dropdown text
                 ]
             },
             'fav': {
@@ -487,8 +766,7 @@
                 modalImage.src = "https://cdn.discordapp.com/attachments/507032646774423612/1298516526596624436/m9xkpNT.png?ex=67a39e01&is=67a24c81&hm=621e7ac49b89acd26cb147f74fef00e341ec08e9fb28906b9789d556704a9f1a&";
             } else if (name === "kaeden") {
                 modalImage.src = "https://cdn.discordapp.com/attachments/1150158510357749860/1336460803909484578/0N9sb0Q.png?ex=67a3e39d&is=67a2921d&hm=77ab80d8da13f46889e9e8080a2eda8b896ef87af2de284f5b852d7612a96354&";
-           // } else if (name === "what is the most colorful fish") {
-              //  modalImage.src = "https://cdn.discordapp.com/attachments/1150158510357749860/1336553974714601576/p05OF95.jpg?ex=67a43a63&is=67a2e8e3&hm=8b924a18f0874a681b47b0b1f7cdcca621e356eab1ae0711f57215687096f089&";
+          
 
             }
             modal.style.display = "block";
@@ -514,6 +792,21 @@
             document.documentElement.style.setProperty('--answer-text', playlist.colors[8]);
             document.documentElement.style.setProperty('--dropdown-bg', playlist.colors[9]); 
             document.documentElement.style.setProperty('--dropdown-text', playlist.colors[10]); 
+            
+           
+            document.documentElement.style.setProperty('--nameplate-text', playlist.colors[2]);
+            document.documentElement.style.setProperty('--nameplate-text-darker', playlist.colors[3]);
+            document.documentElement.style.setProperty('--nameplate-icon', playlist.colors[2]);
+            document.documentElement.style.setProperty('--nameplate-container', playlist.colors[1]);
+            document.documentElement.style.setProperty('--nameplate-gradient', `linear-gradient(25deg, ${playlist.colors[1]}99, rgba(13, 13, 13, 0.5))`);
+            document.documentElement.style.setProperty('--nameplate-border', `2px solid ${playlist.colors[1]}`);
+            document.documentElement.style.setProperty('--nameplate-glow', `0px 0px 16.5px ${playlist.colors[2]}`);
+            
+          
+            document.querySelectorAll('.show-more-btn').forEach(btn => {
+                btn.style.backgroundColor = playlist.colors[4];
+                btn.style.color = playlist.colors[2];
+            });
 
             const embedCode = `<iframe style="border-radius:12px" 
                 src="https://open.spotify.com/embed/playlist/${playlist.id}?utm_source=generator"
@@ -572,6 +865,10 @@
                 closeModal();
             }
         };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded');
+        });
     </script>
 </body>
 </html>
